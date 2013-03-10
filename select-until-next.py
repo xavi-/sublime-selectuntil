@@ -31,7 +31,9 @@ def find_matching_region(view, sel, selector):
 	if not isReverse and (chars is not None or regex is not None):
 		return view.find(chars or regex, sel.begin())
 
-	raise Exception("Have not implemented reverse regex or reverse char")
+	for region in reversed(view.find_all(chars or regex)):
+		if region.end() <= sel.end():
+			return Region(region.begin(), sel.end())
 
 def on_change(view, oriSels, text):
 	newSels = []
