@@ -16,12 +16,12 @@ rSelector = re.compile("^(-?)(?:\[(-?\d+)\]|\{(.+)\}|/(.+)/)$")
 def find_matching_region(view, sel, selector):
 	result = rSelector.search(selector)
 
-	if result is None: return view.find(re.escape(selector), sel.begin())
+	if result is None: return view.find(selector, sel.begin(), sublime.LITERAL)
 
 	groups = result.groups()
 	isReverse = (groups[0] == "-")
 	numVal = int(groups[1]) if groups[1] is not None else None
-	chars = re.escape(groups[2]) if groups[2] is not None else None
+	chars = groups[2] if groups[2] is not None else None
 	regex = groups[3] if groups[3] is not None else None
 
 	if numVal is not None:
@@ -29,9 +29,13 @@ def find_matching_region(view, sel, selector):
 		else: return Region(sel.begin(), sel.end() + numVal)
 
 	if not isReverse and (chars is not None or regex is not None):
-		return view.find(chars or regex, sel.begin())
+		if regex is not None: return view.find(regex, sel.begin())
+		else: return view.find(chars, sel.begin(), sublime.LITERAL)
 
-	for region in reversed(view.find_all(chars or regex)):
+	if regex is not None: regions = view.find_all(regex)
+	else: regions = view.find_all(chars, sublime.LITERAL)
+
+	for region in reversed(regions):
 		if region.end() <= sel.end():
 			return Region(region.begin(), sel.end())
 
