@@ -12,7 +12,7 @@ def on_done(view):
 	for sel in newSels:
 		sels.add(sel)
 
-rSelector = re.compile("^(-?)(?:\[(\d+)\]|\{(.*)\}|/(.*)/)$")
+rSelector = re.compile("^(-?)(?:\[(-?\d+)\]|\{(.*)\}|/(.*)/)$")
 def find_matching_region(view, sel, selector):
 	result = rSelector.search(selector)
 
