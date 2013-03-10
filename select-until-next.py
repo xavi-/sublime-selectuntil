@@ -28,7 +28,7 @@ def find_matching_region(view, sel, selector):
 		if isReverse: return Region(sel.begin() - numVal, sel.end())
 		else: return Region(sel.begin(), sel.end() + numVal)
 
-	if not isReverse and (chars is not None or regex is not None):
+	if not isReverse:
 		if regex is not None: return view.find(regex, sel.begin())
 		else: return view.find(chars, sel.begin(), sublime.LITERAL)
 
