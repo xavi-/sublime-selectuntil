@@ -1,7 +1,6 @@
 import sublime, sublime_plugin
 
 import re
-import time
 
 def parse_input(view, input):
 	sels = view.sel()
