@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+from sublime import Region
 
 import re
 
@@ -11,10 +12,31 @@ def on_done(view):
 	for sel in newSels:
 		sels.add(sel)
 
+rSelector = re.compile("^(-?)(?:\[(\d+)\]|\{(.*)\}|/(.*)/)$")
+def find_matching_region(view, sel, selector):
+	result = rSelector.search(selector)
+
+	if result is None: return view.find(re.escape(selector), sel.begin())
+
+	groups = result.groups()
+	isReverse = (groups[0] == "-")
+	numVal = int(groups[1]) if groups[1] is not None else None
+	chars = re.escape(groups[2]) if groups[2] is not None else None
+	regex = groups[3] if groups[3] is not None else None
+
+	if numVal is not None:
+		if isReverse: return Region(sel.begin() - numVal, sel.end())
+		else: return Region(sel.begin(), sel.end() + numVal)
+
+	if not isReverse and (chars is not None or regex is not None):
+		return view.find(chars or regex, sel.begin())
+
+	raise Exception("Have not implemented reverse regex or reverse char")
+
 def on_change(view, oriSels, text):
 	newSels = []
 	for sel in oriSels:
-		regFind = view.find(re.escape(text), sel.begin())
+		regFind = find_matching_region(view, sel, text)
 
 		if regFind is None: continue
 
