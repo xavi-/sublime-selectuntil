@@ -20,13 +20,13 @@ def find_matching_region(view, sel, selector):
 
 	groups = result.groups()
 	isReverse = (groups[0] == "-")
-	numVal = int(groups[1]) if groups[1] is not None else None
+	num = int(groups[1]) if groups[1] is not None else None
 	chars = groups[2] if groups[2] is not None else None
 	regex = groups[3] if groups[3] is not None else None
 
-	if numVal is not None:
-		if isReverse: return Region(sel.begin() - numVal, sel.end())
-		else: return Region(sel.begin(), sel.end() + numVal)
+	if num is not None:
+		if isReverse: return Region(sel.begin() - num, sel.end())
+		else: return Region(sel.begin(), sel.end() + num)
 
 	if not isReverse:
 		if regex is not None: return view.find(regex, sel.begin())
