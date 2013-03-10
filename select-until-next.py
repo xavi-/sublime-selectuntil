@@ -39,10 +39,10 @@ def find_matching_region(view, sel, selector):
 		if region.end() <= sel.end():
 			return Region(region.begin(), sel.end())
 
-def on_change(view, oriSels, text):
+def on_change(view, oriSels, selector):
 	newSels = []
 	for sel in oriSels:
-		regFind = find_matching_region(view, sel, text)
+		regFind = find_matching_region(view, sel, selector)
 
 		if regFind is None: continue
 
@@ -68,7 +68,7 @@ class SelectUntilNextCommand(sublime_plugin.TextCommand):
 		view.window().show_input_panel(
 			"Select Until Next -- chars or {chars} or [count] or /regex/.  Use minus (-) reverse search.",
 			"",
-			lambda text: on_done(view),
-			lambda text: on_change(view, oriSels, text),
+			lambda selector: on_done(view),
+			lambda selector: on_change(view, oriSels, selector),
 			lambda : on_cancel(view, oriSels)
 		)
