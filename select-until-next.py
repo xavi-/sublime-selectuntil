@@ -21,8 +21,8 @@ def find_matching_region(view, sel, selector):
 	groups = result.groups()
 	isReverse = (groups[0] == "-")
 	num = int(groups[1]) if groups[1] is not None else None
-	chars = groups[2] if groups[2] is not None else None
-	regex = groups[3] if groups[3] is not None else None
+	chars = groups[2]
+	regex = groups[3]
 
 	if num is not None:
 		if isReverse: return Region(sel.begin() - num, sel.end())
