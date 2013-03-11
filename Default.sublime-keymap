@@ -1,5 +1,5 @@
 [
 	{
-		"keys": ["ctrl+s"], "command": "select_until_next"
+		"keys": ["ctrl+s"], "command": "select_until"
 	}
 ] 

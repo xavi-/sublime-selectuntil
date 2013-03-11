@@ -59,7 +59,7 @@ def on_cancel(view, oriSels):
 	for sel in oriSels:
 		sels.add(sel)
 
-class SelectUntilNextCommand(sublime_plugin.TextCommand):
+class SelectUntilCommand(sublime_plugin.TextCommand):
 
 	def run(self, edit):
 		view = self.view
