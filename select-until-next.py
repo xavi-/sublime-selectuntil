@@ -63,7 +63,7 @@ class SelectUntilNextCommand(sublime_plugin.TextCommand):
 
 	def run(self, edit):
 		view = self.view
-		oriSels = [sel for sel in view.sel()]
+		oriSels = [ sel for sel in view.sel() ]
 
 		view.window().show_input_panel(
 			"Select Until Next -- chars or {chars} or [count] or /regex/.  Use minus (-) reverse search.",
