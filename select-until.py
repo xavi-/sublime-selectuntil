@@ -14,6 +14,8 @@ def on_done(view):
 
 rSelector = re.compile("^(-?)(?:\{(-?\d+)\}|\[(.+)\]|/(.+)/)$")
 def find_matching_region(view, sel, selector):
+	if selector == "": return None
+
 	result = rSelector.search(selector)
 
 	if result is None: return view.find(selector, sel.begin(), sublime.LITERAL)
