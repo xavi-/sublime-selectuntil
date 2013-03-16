@@ -12,7 +12,7 @@ def on_done(view):
 	for sel in newSels:
 		sels.add(sel)
 
-rSelector = re.compile("^(-?)(?:\[(-?\d+)\]|\{(.+)\}|/(.+)/)$")
+rSelector = re.compile("^(-?)(?:\{(-?\d+)\}|\[(.+)\]|/(.+)/)$")
 def find_matching_region(view, sel, selector):
 	result = rSelector.search(selector)
 
@@ -66,7 +66,7 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 		oriSels = [ sel for sel in view.sel() ]
 
 		view.window().show_input_panel(
-			"Select Until Next -- chars or {chars} or [count] or /regex/.  Use minus (-) to reverse search:",
+			"Select Until Next -- chars or [chars] or {count} or /regex/.  Use minus (-) to reverse search:",
 			"",
 			lambda selector: on_done(view),
 			lambda selector: on_change(view, oriSels, selector),
