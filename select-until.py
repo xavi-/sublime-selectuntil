@@ -18,7 +18,7 @@ def find_matching_region(view, sel, selector):
 
 	result = rSelector.search(selector)
 
-	if result is None: return view.find(selector, sel.begin(), sublime.LITERAL)
+	if result is None: return view.find(selector, sel.end(), sublime.LITERAL)
 
 	groups = result.groups()
 	isReverse = (groups[0] == "-")
@@ -31,14 +31,14 @@ def find_matching_region(view, sel, selector):
 		else: return Region(sel.begin(), sel.end() + num)
 
 	if not isReverse:
-		if regex is not None: return view.find(regex, sel.begin())
-		else: return view.find(chars, sel.begin(), sublime.LITERAL)
+		if regex is not None: return view.find(regex, sel.end())
+		else: return view.find(chars, sel.end(), sublime.LITERAL)
 
 	if regex is not None: regions = view.find_all(regex)
 	else: regions = view.find_all(chars, sublime.LITERAL)
 
 	for region in reversed(regions):
-		if region.end() <= sel.end():
+		if region.end() <= sel.begin():
 			return Region(region.begin(), sel.end())
 
 def on_change(view, oriSels, selector):
