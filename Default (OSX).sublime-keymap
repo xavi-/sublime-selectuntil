@@ -1,5 +1,5 @@
 [
 	{
-		"keys": ["ctrl+s"], "command": "select_until"
+		"keys": ["ctrl+shift+s"], "command": "select_until"
 	}
 ] 
