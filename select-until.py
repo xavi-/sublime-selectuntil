@@ -74,3 +74,16 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 			lambda selector: on_change(view, oriSels, selector),
 			lambda : on_cancel(view, oriSels)
 		)
+
+class ReverseSelectCommand(sublime_plugin.TextCommand):
+
+	def run(self, edit):
+		sels = self.view.sel()
+
+		newSels = []
+		for sel in sels:
+			newSels.append(Region(sel.b, sel.a))
+
+		sels.clear()
+		for sel in newSels:
+			sels.add(sel)
