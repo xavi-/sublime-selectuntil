@@ -4,11 +4,13 @@ Fill a void in your Sublime Text multiple selection capabilities! This plugin al
 ## Usage
 `ctrl+shift+s` pulls up an input field, where you can type:
 
- - `search term` or `[search term]`: for each selection, select up to and including the first occurrence of the search term.
- - `/regex search/`: select through the first occurrence of the regex.
- - `{character count}`: select forward the given number of characters.
- - `-[search term]`: select backwards up to and including the search term.
+ - `search term` or `[search term]`: extend each selection up through the first occurrence of the search term.
+ - `/regex search/`: extend through the first occurrence of the regex.
+ - `{character count}`: extend forward the given number of characters.
+ - `-[search term]`: extend backwards up to and including the search term.
  - `-/regex/`: backwards regex.
- - `-{character count}`: select backwards a certain number of characters (`{-count}` works too).
+ - `-{character count}`: extend backwards a certain number of characters (`{-count}` works too).
 
 `ctrl+shift+r`: reverse all selections (so if the insertion point is at the end of the selection, it is moved to the beginning, and vice versa).
+
+You can also add your own keybinding and set the "extend" argument to false to just move the selections instead of extending them.
