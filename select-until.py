@@ -44,6 +44,7 @@ def find_matching_point(view, sel, selector):
 	for region in reversed(regions):
 		if region.end() <= sel.begin():
 			return region.begin()
+	return -1
 
 def on_change(view, oriSels, selector):
 	extendedSels = []
