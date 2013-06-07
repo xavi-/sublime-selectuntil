@@ -3,6 +3,13 @@ from sublime import Region
 
 import re
 
+# In ST3, view.find returns Region(-1,-1) if there are no occurrences.
+# In ST2, however, it returns None, so we have to check for that.
+def safe_end(region):
+	if region is None:
+		return -1
+	return region.end()
+
 def on_done(view, extend):
 	if extend:
 		newSels = view.get_regions("select-until-extended")
@@ -22,7 +29,7 @@ def find_matching_point(view, sel, selector):
 
 	result = rSelector.search(selector)
 
-	if result is None: return view.find(selector, sel.end(), sublime.LITERAL).end()
+	if result is None: return safe_end(view.find(selector, sel.end(), sublime.LITERAL))
 
 	groups = result.groups()
 	isReverse = (groups[0] == "-")
@@ -35,8 +42,8 @@ def find_matching_point(view, sel, selector):
 		else: return sel.end() + num
 
 	if not isReverse:
-		if regex is not None: return view.find(regex, sel.end()).end()
-		else: return view.find(chars, sel.end(), sublime.LITERAL).end()
+		if regex is not None: return safe_end(view.find(regex, sel.end()))
+		else: return safe_end(view.find(chars, sel.end(), sublime.LITERAL))
 
 	if regex is not None: regions = view.find_all(regex)
 	else: regions = view.find_all(chars, sublime.LITERAL)
