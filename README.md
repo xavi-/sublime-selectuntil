@@ -26,6 +26,7 @@ Alternatively you can clone this git repository in to your [Packages Directory](
 ## Developed by
 
 * Xavi Ramirez
+* [adzenith](https://github.com/adzenith)
 
 ## License
 
