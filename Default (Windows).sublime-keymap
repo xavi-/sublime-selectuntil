@@ -1,6 +1,6 @@
 [
 	{
-		"keys": ["alt+shift+s"], "command": "select_until"
+		"keys": ["alt+shift+s"], "command": "select_until", "args": {"extend": true}
 	},
 	{
 		"keys": ["alt+shift+r"], "command": "reverse_select"
