@@ -1,0 +1,11 @@
+[
+	{
+		"id": "selection",
+		"children":
+		[
+			{ "caption": "-", "id": "select_until" },
+			{ "caption": "Reverse Current Selection", "command": "reverse_select" },
+			{ "caption": "Expand Selection Until...", "command": "select_until", "args": { "extend": true } }
+		]
+	}
+]
