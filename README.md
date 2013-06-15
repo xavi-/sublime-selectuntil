@@ -15,7 +15,7 @@ Fill a void in your Sublime Text multiple selection capabilities! This plugin al
 
 - <kbd>ctrl/alt</kbd> + <kbd>shift</kbd> + <kbd>r</kbd>: reverse all selections (so if the insertion point is at the end of the selection, it is moved to the beginning, and vice versa).
 
-On Windows and Linux the default shortcuts use <kbd>alt</kbd> while OSX <kbd>ctrl</kbd> is used.
+On Windows and Linux the default shortcuts use <kbd>alt</kbd>.  On OSX <kbd>ctrl</kbd> is used.
 
 ## Getting SelectUntil
 
