@@ -23,6 +23,8 @@ def on_done(view, extend):
 	for sel in newSels:
 		sels.add(sel)
 
+	SelectUntilCommand.prevSelector = SelectUntilCommand.temp or SelectUntilCommand.prevSelector
+
 rSelector = re.compile("^(-?)(?:\{(-?\d+)\}|\[(.+)\]|/(.+)/)$")
 def find_matching_point(view, sel, selector):
 	if selector == "": return -1
@@ -54,6 +56,7 @@ def find_matching_point(view, sel, selector):
 	return -1
 
 def on_change(view, oriSels, selector):
+	SelectUntilCommand.temp = selector
 	extendedSels = []
 	newSels = []
 	for sel in oriSels:
@@ -81,18 +84,22 @@ def on_cancel(view, oriSels):
 		sels.add(sel)
 
 class SelectUntilCommand(sublime_plugin.TextCommand):
+	temp = ""
+	prevSelector = ""
 
 	def run(self, edit, extend):
 		view = self.view
 		oriSels = [ sel for sel in view.sel() ]
 
-		view.window().show_input_panel(
+		v = view.window().show_input_panel(
 			"Select Until Next -- chars or [chars] or {count} or /regex/.  Use minus (-) to reverse search:",
-			"",
+			SelectUntilCommand.prevSelector,
 			lambda selector: on_done(view, extend),
 			lambda selector: on_change(view, oriSels, selector),
 			lambda : on_cancel(view, oriSels)
 		)
+		v.sel().clear()
+		v.sel().add(sublime.Region(0, len(SelectUntilCommand.prevSelector)))
 
 class ReverseSelectCommand(sublime_plugin.TextCommand):
 
