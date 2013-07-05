@@ -21,7 +21,7 @@ On Windows and Linux the default shortcuts use <kbd>alt</kbd>.  On OSX <kbd>ctrl
 
 The easiest way to get SelectUntil is with [Sublime Package Control](http://wbond.net/sublime_packages/package_control/installation).  Search for "SelectUntil".
 
-Alternatively you can clone this git repository in to your [Packages Directory](http://sublimetext.info/docs/en/basic_concepts.html):
+Alternatively you can clone this git repository into your [Packages Directory](http://sublimetext.info/docs/en/basic_concepts.html):
 
 	git://github.com/xavi-/sublime-selectuntil.git
 
