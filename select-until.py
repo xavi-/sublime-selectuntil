@@ -17,6 +17,7 @@ def on_done(view, extend):
 		newSels = view.get_regions("select-until")
 	view.erase_regions("select-until-extended")
 	view.erase_regions("select-until")
+	view.erase_regions("select-until-originals")
 
 	sels = view.sel()
 	sels.clear()
@@ -55,7 +56,7 @@ def find_matching_point(view, sel, selector):
 			return region.begin()
 	return -1
 
-def on_change(view, oriSels, selector):
+def on_change(view, oriSels, selector, extend):
 	SelectUntilCommand.temp = selector
 	extendedSels = []
 	newSels = []
@@ -71,12 +72,16 @@ def on_change(view, oriSels, selector):
 
 		newSels.append(region)
 
-	view.add_regions("select-until-extended", extendedSels, "comment", "", sublime.DRAW_OUTLINED)
-	view.add_regions("select-until", newSels, "comment", "", sublime.DRAW_OUTLINED)
+	view.add_regions("select-until-originals", oriSels, "comment", "", sublime.DRAW_EMPTY)
+	if extend:
+		view.add_regions("select-until-extended", extendedSels, "entity", "", sublime.DRAW_OUTLINED)
+	else:
+		view.add_regions("select-until", newSels, "entity", "", sublime.DRAW_EMPTY)
 
 def on_cancel(view, oriSels):
 	view.erase_regions("select-until-extended")
 	view.erase_regions("select-until")
+	view.erase_regions("select-until-originals")
 
 	sels = view.sel()
 	sels.clear()
@@ -95,7 +100,7 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 			"Select Until Next -- chars or [chars] or {count} or /regex/.  Use minus (-) to reverse search:",
 			SelectUntilCommand.prevSelector,
 			lambda selector: on_done(view, extend),
-			lambda selector: on_change(view, oriSels, selector),
+			lambda selector: on_change(view, oriSels, selector, extend),
 			lambda : on_cancel(view, oriSels)
 		)
 		v.sel().clear()
