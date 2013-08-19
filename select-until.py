@@ -46,20 +46,20 @@ def find_matching_point(view, sel, selector):
 	chars = groups[2]
 	regex = groups[3]
 
-	if num is not None:
-		if isReverse: return sel.begin() - num
-		else: return sel.end() + num
-
 	if not isReverse:
-		if regex is not None: return safe_end(view.find(regex, sel.end()))
+		if num is not None: return sel.end() + num
+		elif regex is not None: return safe_end(view.find(regex, sel.end()))
 		else: return safe_end(view.find(chars, sel.end(), sublime.LITERAL))
 
-	if regex is not None: regions = view.find_all(regex)
-	else: regions = view.find_all(chars, sublime.LITERAL)
+	else:
+		if num is not None: return sel.begin() - num
+		elif regex is not None: regions = view.find_all(regex)
+		else: regions = view.find_all(chars, sublime.LITERAL)
 
-	for region in reversed(regions):
-		if region.end() <= sel.begin():
-			return region.begin()
+		for region in reversed(regions):
+			if region.end() <= sel.begin():
+				return region.begin()
+
 	return -1
 
 def negate_selector(selector):
