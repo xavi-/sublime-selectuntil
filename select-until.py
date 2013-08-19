@@ -10,14 +10,16 @@ def safe_end(region):
 		return -1
 	return region.end()
 
+def clean_up(view):
+	view.erase_regions("select-until-extended")
+	view.erase_regions("select-until")
+	view.erase_regions("select-until-originals")
+
 def on_done(view, extend):
 	if extend:
 		newSels = view.get_regions("select-until-extended")
 	else:
 		newSels = view.get_regions("select-until")
-	view.erase_regions("select-until-extended")
-	view.erase_regions("select-until")
-	view.erase_regions("select-until-originals")
 
 	sels = view.sel()
 	sels.clear()
@@ -25,6 +27,7 @@ def on_done(view, extend):
 		sels.add(sel)
 
 	SelectUntilCommand.prevSelector = SelectUntilCommand.temp or SelectUntilCommand.prevSelector
+	clean_up(view)
 
 rSelector = re.compile("^(-?)(?:\{(-?\d+)\}|\[(.+)\]|/(.+)/)$")
 def find_matching_point(view, sel, selector):
@@ -79,14 +82,12 @@ def on_change(view, oriSels, selector, extend):
 		view.add_regions("select-until", newSels, "entity", "", sublime.DRAW_EMPTY)
 
 def on_cancel(view, oriSels):
-	view.erase_regions("select-until-extended")
-	view.erase_regions("select-until")
-	view.erase_regions("select-until-originals")
-
 	sels = view.sel()
 	sels.clear()
 	for sel in oriSels:
 		sels.add(sel)
+
+	clean_up(view)
 
 class SelectUntilCommand(sublime_plugin.TextCommand):
 	temp = ""
