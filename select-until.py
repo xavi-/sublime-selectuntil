@@ -15,6 +15,9 @@ def clean_up(view):
 	view.erase_regions("select-until")
 	view.erase_regions("select-until-originals")
 
+	SelectUntilCommand.input_panel = None
+	SelectUntilCommand.first_opened = True
+
 def on_done(view, extend):
 	if extend:
 		newSels = view.get_regions("select-until-extended")
@@ -59,6 +62,22 @@ def find_matching_point(view, sel, selector):
 			return region.begin()
 	return -1
 
+def negate_selector(selector):
+	if selector == "": return selector
+
+	result = rSelector.search(selector)
+
+	if result is None: return True, "-[" + selector + "]"
+
+	groups = result.groups()
+	makeReverse = (groups[0] != "-")
+	num, chars, regex = groups[1:]
+
+	negateChar = "-" if makeReverse else ""
+	if num is not None: return makeReverse, negateChar + "{" + num + "}"
+	elif chars is not None: return makeReverse, negateChar + "[" + chars + "]"
+	elif regex is not None: return makeReverse, negateChar + "/" + regex + "/"
+
 def on_change(view, oriSels, selector, extend):
 	SelectUntilCommand.temp = selector
 	extendedSels = []
@@ -92,6 +111,8 @@ def on_cancel(view, oriSels):
 class SelectUntilCommand(sublime_plugin.TextCommand):
 	temp = ""
 	prevSelector = ""
+	input_panel = None
+	first_opened = True
 
 	def run(self, edit, extend):
 		view = self.view
@@ -104,8 +125,27 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 			lambda selector: on_change(view, oriSels, selector, extend),
 			lambda : on_cancel(view, oriSels)
 		)
-		v.sel().clear()
-		v.sel().add(Region(0, v.size()))
+
+		# view.window().show_input_panel returns None when input_panel is already shown in subl v2
+		if v is not None:
+			v.sel().clear()
+			v.sel().add(Region(0, v.size()))
+			SelectUntilCommand.input_panel = v
+
+		input_panel = SelectUntilCommand.input_panel
+		if input_panel and not SelectUntilCommand.first_opened:
+			fullRegion = Region(0, input_panel.size())
+
+			isReverse, negSelector = negate_selector(input_panel.substr(fullRegion))
+			highlight = Region(1 + (1 if isReverse else 0), len(negSelector) - 1)
+
+			edit = input_panel.begin_edit()
+			input_panel.replace(edit, fullRegion, negSelector)
+			input_panel.sel().clear()
+			input_panel.sel().add(highlight)
+			input_panel.end_edit(edit)
+
+		SelectUntilCommand.first_opened = False;
 
 class ReverseSelectCommand(sublime_plugin.TextCommand):
 

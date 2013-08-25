@@ -13,6 +13,8 @@ Fill a void in your Sublime Text multiple selection capabilities! This plugin al
 	- `-/regex/`: backwards regex.
 	- `-{character count}`: select backwards a certain number of characters (`{-count}` works too).
 
+- <kbd>ctrl/alt</kbd> + <kbd>shift</kbd> + <kbd>s</kbd> a second time: reverses the search direction.
+
 - <kbd>ctrl/alt</kbd> + <kbd>shift</kbd> + <kbd>r</kbd>: reverse all selections (so if the insertion point is at the end of the selection, it is moved to the beginning, and vice versa).
 
 On Windows and Linux the default shortcuts use <kbd>alt</kbd>.  On OSX <kbd>ctrl</kbd> is used.
