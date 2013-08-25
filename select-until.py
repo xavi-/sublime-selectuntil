@@ -104,7 +104,7 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 			lambda : on_cancel(view, oriSels)
 		)
 		v.sel().clear()
-		v.sel().add(Region(0, len(SelectUntilCommand.prevSelector)))
+		v.sel().add(Region(0, v.size()))
 
 class ReverseSelectCommand(sublime_plugin.TextCommand):
 
