@@ -1,7 +1,11 @@
 import sublime, sublime_plugin
 from sublime import Region
 
-from edit import Edit
+import sys
+if sys.version_info[0] < 3:
+	from edit import Edit
+else:
+	from SelectUntil.edit import Edit
 
 import re
 
