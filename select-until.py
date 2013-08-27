@@ -1,6 +1,8 @@
 import sublime, sublime_plugin
 from sublime import Region
 
+from edit import Edit
+
 import re
 
 # In ST3, view.find returns Region(-1,-1) if there are no occurrences.
@@ -139,11 +141,11 @@ class SelectUntilCommand(sublime_plugin.TextCommand):
 			isReverse, negSelector = negate_selector(input_panel.substr(fullRegion))
 			highlight = Region(1 + (1 if isReverse else 0), len(negSelector) - 1)
 
-			edit = input_panel.begin_edit()
-			input_panel.replace(edit, fullRegion, negSelector)
+			with Edit(input_panel) as edit:
+				edit.replace(fullRegion, negSelector)
+
 			input_panel.sel().clear()
 			input_panel.sel().add(highlight)
-			input_panel.end_edit(edit)
 
 		SelectUntilCommand.first_opened = False;
 
